@@ -4,6 +4,7 @@ require('dotenv').config();
 // Import package
 
 // Your code here 
+const jwt = require('jsonwebtoken');
 
 // Define variables - DO NOT MODIFY
 
@@ -11,6 +12,11 @@ require('dotenv').config();
 let token; // DO NOT MODIFY! Re-assign the token variable below.
 
 // Your code here 
+token = jwt.sign(
+    { email: "johnny@gmail.com" },
+    process.env.SECRET_KEY,
+    { expiresIn: '1h' }
+);
 
 // See the JWT in the console - DO NOT MODIFY
 console.log('JWT:', token);
@@ -20,6 +26,7 @@ console.log('JWT:', token);
 let payload; // DO NOT MODIFY! Re-assign the payload variable below.
 
 // Your code here 
+payload = jwt.decode(token);
 
 // See the decoded payload in the console - DO NOT MODIFY
 console.log('Payload:', payload);
@@ -29,6 +36,7 @@ console.log('Payload:', payload);
 let verifiedPayload; // DO NOT MODIFY! Re-assign the verifiedPayload variable below.
 
 // Your code here 
+verifiedPayload = jwt.verify(token, process.env.SECRET_KEY);
 
 // See the verified payload in the console - DO NOT MODIFY
 console.log('Verified Payload:', verifiedPayload);
@@ -47,3 +55,12 @@ console.log('Verified Payload:', verifiedPayload);
 //    Then "catch" the error and log it to the console
 
 // Your code here 
+const fakeSecretKey = '925615bad652235dc88fa31dede672c3073da39a1260d6c578c221fc35afd864d9a52958496e36be7a24c630c0601b580ea927c16cb8eb949da83086b5fdd498';
+
+let jwtError;
+
+try {
+    jwtError = jwt.verify(token, fakeSecretKey);
+} catch (error) {
+    console.log('JSON Web Token Error: Invalid Secret Key');
+}
